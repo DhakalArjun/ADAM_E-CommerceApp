@@ -9,7 +9,7 @@ namespace ADAM_E_CommerceApp.Models
         [Key]            
         public int CategoryId { get; set; }
         [Required]
-        public int Name { get; set; }
+        public string Name { get; set; }
         public int DisplayOrder { get; set; }
     }
 }
