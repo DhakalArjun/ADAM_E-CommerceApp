@@ -1,0 +1,35 @@
+﻿@page
+@model ADAM_Razor_Temp.Pages.Categories.IndexModel
+
+<div class="container d-flex justify-content-between px-0">
+    <div class="col-6">
+        <h3>Category List</h3>
+    </div>
+    <div class="col-6 text-end">      
+        <a asp-page="/categories/create" class="btn btn-primary my-2"><i class="bi bi-plus-square-fill"></i> Create Category</a>
+    </div>
+</div>
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Category Name</th>
+            <th>Display Order</th>
+            <th class="text-center">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.CategoryList.OrderBy(u => u.DisplayOrder))
+        {
+            <tr>
+                <td>@item.Name</td>
+                <td>@item.DisplayOrder</td>
+                <td>
+                    <div class="py-0 text-center">
+                        <a asp-page="/categories/edit" asp-route-id="@item.CategoryId" class="btn btn-outline-primary btn-sm mx-2"><i class="bi bi-pencil-square"></i> Edit</a>
+                        <a asp-page="/categories/delete" asp-route-id="@item.CategoryId" class="btn btn-outline-danger btn-sm mx-2"><i class="bi bi-trash"></i> Delete</a>
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,30 @@
+﻿@page
+@model ADAM_Razor_Temp.Pages.Categories.CreateModel
+
+<form method="post" class="col-md-6">
+    <h3>Create Category</h3>
+    <hr class="mb-5" />
+    @*<div asp-validation-summary="All" class="text-danger"></div>*@
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="mb-3">
+        <label asp-for="Category.Name" class="form-label"></label>
+        <input asp-for="Category.Name" class="form-control">
+        <span asp-validation-for="Category.Name" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Category.DisplayOrder" class="form-label"></label>
+        <input asp-for="Category.DisplayOrder" class="form-control">
+        <span asp-validation-for="Category.DisplayOrder" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary" style="width:120px">Create</button>
+    <a asp-page="/categories/index" class="btn btn-outline-secondary px-2" style="width:120px">Back</a>
+</form>
+
+@section Scripts{
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+}
+@* Note: We need above syntax as this partial view is script related else we can directly partial view as
+     <partial name="_ValidationScriptsPartial"/>
+*@
