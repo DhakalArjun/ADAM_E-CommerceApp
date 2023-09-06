@@ -1,7 +1,7 @@
-﻿using ADAM_E_CommerceApp.Models;
+﻿using ADAM.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace ADAM_E_CommerceApp.Data
+namespace ADAM.DataAccess.Data
 {
     public class ApplicationDbContext:DbContext
     {

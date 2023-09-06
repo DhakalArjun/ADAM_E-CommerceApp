@@ -1,4 +1,4 @@
-namespace ADAM_E_CommerceApp.Models
+namespace ADAM.Models
 {
     public class ErrorViewModel
     {

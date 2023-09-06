@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace ADAM_E_CommerceApp.Models
+namespace ADAM.Models
 {
     public class Category
     {
