@@ -20,3 +20,8 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.form-control::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: #7b8a8b;
+    opacity: 1; /* Firefox */
+}
