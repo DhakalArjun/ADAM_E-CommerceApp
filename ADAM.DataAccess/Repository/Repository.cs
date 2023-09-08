@@ -21,6 +21,8 @@ namespace ADAM.DataAccess.Repository
             _context = context;
             this.dbSet = _context.Set<T>();
             //dbSet == _context.Categories 
+            //_context.Products.Include(u => u.Category); //to include Category from foreign Key relationship
+            //_context.Products.Include(u => u.Category).Include(u => u.anotherTable) - we can use multiple include together
         }
 
         public void Add(T entity)
@@ -29,19 +31,38 @@ namespace ADAM.DataAccess.Repository
             //_context.Categories.Add(entity);
         }
 
-        public T GetDetails(Expression<Func<T, bool>> filter)
+        //Category, CoverType etc in comma separated values
+        public T GetDetails(Expression<Func<T, bool>> filter, string? includeProperties = null)
         {
             IQueryable<T> query = dbSet;   //here we have complete dbSet
             query = query.Where(filter);   //apply filter
+            if (!string.IsNullOrEmpty(includeProperties))
+            {
+                foreach (var includeProperty in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    query = query.Include(includeProperty);
+
+                }
+            }
             return query.FirstOrDefault();  //return the first or default
 
             // Category? selectedCategory3 = _context.Categories.Where(u => u.CategoryId ==id).FirstOrDefault();
             //                                 dbSet            .Where(filter)                 .FirstOrDefault();
         }
 
-        public IEnumerable<T> GetAll()
+        //Category, CoverType etc in comma separated values
+        public IEnumerable<T> GetAll(string? includeProperties = null)
+        //public IEnumerable<T> GetAll()
         {
             IQueryable<T> query = dbSet;
+            if (!string.IsNullOrEmpty(includeProperties))
+            {
+                foreach (var includeProperty in includeProperties.Split(new char[] { ','}, StringSplitOptions.RemoveEmptyEntries)) 
+                {
+                    query = query.Include(includeProperty);
+
+                }
+            }
             return query.ToList();
         }
 

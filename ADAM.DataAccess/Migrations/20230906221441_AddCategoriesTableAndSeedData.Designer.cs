@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ADAM.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230906065813_AddCategoryDbSeedData")]
-    partial class AddCategoryDbSeedData
+    [Migration("20230906221441_AddCategoriesTableAndSeedData")]
+    partial class AddCategoriesTableAndSeedData
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -49,43 +49,19 @@ namespace ADAM.DataAccess.Migrations
                         {
                             CategoryId = 1,
                             DisplayOrder = 1,
-                            Name = "Electronics"
+                            Name = "Action"
                         },
                         new
                         {
                             CategoryId = 2,
                             DisplayOrder = 2,
-                            Name = "Books"
+                            Name = "SciFi"
                         },
                         new
                         {
                             CategoryId = 3,
                             DisplayOrder = 3,
-                            Name = "Fashion"
-                        },
-                        new
-                        {
-                            CategoryId = 4,
-                            DisplayOrder = 4,
-                            Name = "Sports & Outdoors"
-                        },
-                        new
-                        {
-                            CategoryId = 5,
-                            DisplayOrder = 5,
-                            Name = "Health & Household"
-                        },
-                        new
-                        {
-                            CategoryId = 6,
-                            DisplayOrder = 6,
-                            Name = "Computers"
-                        },
-                        new
-                        {
-                            CategoryId = 7,
-                            DisplayOrder = 7,
-                            Name = "Toys & Games"
+                            Name = "History"
                         });
                 });
 #pragma warning restore 612, 618

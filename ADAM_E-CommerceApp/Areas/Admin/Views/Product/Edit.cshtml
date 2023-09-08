@@ -1,0 +1,73 @@
+﻿@model Product
+
+<div class="card shadow border-0 mt-4">
+    <div class="card-header bg-secondary bg-gradient m-lg-0 py-1">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h3 class="text-white py-2">Edit product</h3>  
+            </div>
+        </div>
+
+    </div>
+    <div class="card-body p-4">
+        <form method="post" class="row">
+            <input asp-for="ProductId" type="hidden" value="@Model.ProductId" />
+            @*Note: above hidden field is not required if passed variable name is same as property name*@
+            @*<div asp-validation-summary="All" class="text-danger"></div>*@
+            <div class="form-floating mb-3">
+                <input asp-for="Title" class="form-control">
+                <label asp-for="Title" class="mx-2"></label>
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3">
+                <textarea asp-for="Description" class="form-control"></textarea>
+                <label asp-for="Description" class="mx-2"></label>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3">
+                <input asp-for="ISBN" class="form-control">
+                <label asp-for="ISBN" class="mx-2"></label>
+                <span asp-validation-for="ISBN" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3">
+                <input asp-for="Author" class="form-control">
+                <label asp-for="Author" class="mx-2"></label>
+                <span asp-validation-for="Author" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3">
+                <input asp-for="ListPrice" class="form-control">
+                <label asp-for="ListPrice" class="mx-2"></label>
+                <span asp-validation-for="ListPrice" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3">
+                <input asp-for="Price" class="form-control">
+                <label asp-for="Price" class="mx-2"></label>
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3">
+                <input asp-for="Price50" class="form-control">
+                <label asp-for="Price50" class="mx-2"></label>
+                <span asp-validation-for="Price50" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3">
+                <input asp-for="Price100" class="form-control">
+                <label asp-for="Price100" class="mx-2"></label>
+                <span asp-validation-for="Price100" class="text-danger"></span>
+            </div>
+            <div>
+                <button type="submit" class="btn btn-primary" style="width:120px">Update</button>
+                <a asp-controller="Product" asp-action="Index" class="btn btn-outline-secondary mx-2" style="width:120px">Back</a>
+            </div>
+            
+        </form>        
+    </div>
+</div>
+@section Scripts{
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+}
+@* Note: We need above syntax as this partial view is script related else we can directly partial view as
+     <partial name="_ValidationScriptsPartial"/>
+*@
+

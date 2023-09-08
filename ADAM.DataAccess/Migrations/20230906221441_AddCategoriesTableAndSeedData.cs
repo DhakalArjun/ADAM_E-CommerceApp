@@ -7,7 +7,7 @@
 namespace ADAM.DataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class AddCategoryDbSeedData : Migration
+    public partial class AddCategoriesTableAndSeedData : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -31,13 +31,9 @@ namespace ADAM.DataAccess.Migrations
                 columns: new[] { "CategoryId", "DisplayOrder", "Name" },
                 values: new object[,]
                 {
-                    { 1, 1, "Electronics" },
-                    { 2, 2, "Books" },
-                    { 3, 3, "Fashion" },
-                    { 4, 4, "Sports & Outdoors" },
-                    { 5, 5, "Health & Household" },
-                    { 6, 6, "Computers" },
-                    { 7, 7, "Toys & Games" }
+                    { 1, 1, "Action" },
+                    { 2, 2, "SciFi" },
+                    { 3, 3, "History" }
                 });
         }
 

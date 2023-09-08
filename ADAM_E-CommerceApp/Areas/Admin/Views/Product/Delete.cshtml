@@ -1,0 +1,53 @@
+﻿@model Product
+
+<div class="card shadow border-0 mt-4">
+    <div class="card-header bg-secondary bg-gradient m-lg-0 py-1">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h3 class="text-white py-2">Delete product</h3>
+            </div>
+        </div>
+    </div>
+    <div class="card-body p-4">
+        <form method="post" class="row">                
+            <input asp-for="ProductId" type="hidden" value="@Model.ProductId" />
+            <div class="mb-3 form-floating">
+                <input asp-for="Title" class="form-control" disabled>
+                <label asp-for="Title" class="mx-2"></label>
+            </div>
+            <div class="mb-3 form-floating">
+                <textarea asp-for="Description" class="form-control" disabled></textarea>
+                <label asp-for="Description" class="mx-2"></label>
+            </div>
+            <div class="mb-3 form-floating">
+                <input asp-for="ISBN" class="form-control" disabled>
+                <label asp-for="ISBN" class="mx-2"></label>
+            </div>
+            <div class="mb-3 form-floating">
+                <input asp-for="Author" class="form-control" disabled>
+                <label asp-for="Author" class="mx-2"></label>
+            </div>
+            <div class="mb-3 form-floating">
+                <input asp-for="ListPrice" class="form-control" disabled>
+                <label asp-for="ListPrice" class="mx-2"></label>
+            </div>
+            <div class="mb-3 form-floating">
+                <input asp-for="Price" class="form-control" disabled>
+                <label asp-for="Price" class="mx-2"></label>
+            </div>
+            <div class="mb-3 form-floating">
+                <input asp-for="Price50" class="form-control" disabled>
+                <label asp-for="Price50" class="mx-2"></label>
+            </div>
+            <div class="mb-3 form-floating">
+                <input asp-for="Price100" class="form-control" disabled>
+                <label asp-for="Price100" class="mx-2"></label>
+            </div>           
+            <div>
+                <button type="submit" class="btn btn-danger" style="width:120px">Delete</button>
+                <a asp-controller="Product" asp-action="Index" class="btn btn-outline-secondary mx-2" style="width:120px">Back</a>
+            </div>           
+        </form>
+    </div>
+</div>
+
