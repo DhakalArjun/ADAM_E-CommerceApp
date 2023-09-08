@@ -23,6 +23,12 @@ namespace ADAM_E_CommerceApp.Areas.Customer.Controllers
             return View(productList);
         }
 
+        public IActionResult Details(int? productId)
+        {
+            Product? productDetails = _unitOfWork.productRepository.GetDetails(u => u.ProductId == productId, includeProperties: "Category");
+            return View(productDetails);
+        }
+
         public IActionResult Privacy()
         {
             return View();
