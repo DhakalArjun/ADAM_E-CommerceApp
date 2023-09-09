@@ -1,12 +1,15 @@
 ﻿using ADAM.DataAccess.Repository.IRepository;
 using ADAM.Models;
 using ADAM.Models.ViewModels;
+using ADAM.Utility;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace ADAM_E_CommerceApp.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = StaticDetails.Role_Admin)]
     public class ProductController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;

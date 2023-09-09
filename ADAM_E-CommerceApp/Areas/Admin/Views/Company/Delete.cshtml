@@ -1,0 +1,45 @@
+﻿@model Company
+
+<div class="card shadow border-0 mt-4">
+    <div class="card-header bg-secondary bg-gradient m-lg-0 py-1">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h3 class="text-white py-2">Delete Company</h3>
+            </div>
+        </div>
+    </div>
+    <div class="card-body p-4">
+        <form method="post" class="row">                
+            <input asp-for="CompanyId" type="hidden" value="@Model.CompanyId" />
+            <div class="mb-3 form-floating">
+                <input asp-for="CompanyName" class="form-control" disabled>
+                <label asp-for="CompanyName" class="mx-2"></label>
+            </div>           
+            <div class="mb-3 form-floating">
+                <input asp-for="StreetAddress" class="form-control" disabled>
+                <label asp-for="StreetAddress" class="mx-2"></label>
+            </div>
+            <div class="mb-3 form-floating">
+                <input asp-for="City" class="form-control" disabled>
+                <label asp-for="City" class="mx-2"></label>
+            </div>
+            <div class="mb-3 form-floating">
+                <input asp-for="State" class="form-control" disabled>
+                <label asp-for="State" class="mx-2"></label>
+            </div>
+            <div class="mb-3 form-floating">
+                <input asp-for="PostalCode" class="form-control" disabled>
+                <label asp-for="PostalCode" class="mx-2"></label>
+            </div>
+            <div class="mb-3 form-floating">
+                <input asp-for="PhoneNumber" class="form-control" disabled>
+                <label asp-for="PhoneNumber" class="mx-2"></label>
+            </div>                    
+            <div>
+                <button type="submit" class="btn btn-danger" style="width:120px">Delete</button>
+                <a asp-controller="Company" asp-action="Index" class="btn btn-outline-secondary mx-2" style="width:120px">Back</a>
+            </div>           
+        </form>
+    </div>
+</div>
+

@@ -2,12 +2,15 @@
 using ADAM.DataAccess.Repository;
 using ADAM.DataAccess.Repository.IRepository;
 using ADAM.Models;
+using ADAM.Utility;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace ADAM_E_CommerceApp.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = StaticDetails.Role_Admin)]
     public class CategoryController : Controller
     {
         /*private readonly ICategoryRepository _categoryRepository;
