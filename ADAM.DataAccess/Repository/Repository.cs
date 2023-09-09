@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using ADAM.DataAccess.Data;
 using ADAM.DataAccess.Repository.IRepository;
 using Microsoft.EntityFrameworkCore;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace ADAM.DataAccess.Repository
 {
@@ -32,9 +33,17 @@ namespace ADAM.DataAccess.Repository
         }
 
         //Category, CoverType etc in comma separated values
-        public T GetDetails(Expression<Func<T, bool>> filter, string? includeProperties = null)
+        public T GetDetails(Expression<Func<T, bool>> filter, string? includeProperties = null, bool tracked = false)
         {
-            IQueryable<T> query = dbSet;   //here we have complete dbSet
+            IQueryable<T> query;
+            if (tracked) //of tracked==true
+            {
+                query = dbSet;   //here we have complete dbSet
+            }
+            else
+            {
+                query = dbSet.AsNoTracking();   //as not tracking -- to avoid unintentional data change and save
+            }
             query = query.Where(filter);   //apply filter
             if (!string.IsNullOrEmpty(includeProperties))
             {
@@ -48,6 +57,7 @@ namespace ADAM.DataAccess.Repository
 
             // Category? selectedCategory3 = _context.Categories.Where(u => u.CategoryId ==id).FirstOrDefault();
             //                                 dbSet            .Where(filter)                 .FirstOrDefault();
+
         }
 
         //Category, CoverType etc in comma separated values

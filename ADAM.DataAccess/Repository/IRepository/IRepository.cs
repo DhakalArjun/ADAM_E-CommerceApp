@@ -14,7 +14,7 @@ namespace ADAM.DataAccess.Repository.IRepository
 
         // Category? selectedCategory2 = _context.Categories.FirstOrDefault(u => u.CategoryId == id);
         //    T      GetDetails         filter expression( function (T, bool)) 
-        T GetDetails(Expression<Func<T, bool>> filter, string? includeProperties = null);
+        T GetDetails(Expression<Func<T, bool>> filter, string? includeProperties = null, bool tracked = false);
 
         void Add(T entity);
 
