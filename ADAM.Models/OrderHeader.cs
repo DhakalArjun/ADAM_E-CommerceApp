@@ -11,9 +11,10 @@ namespace ADAM.Models
 {
     public class OrderHeader
     {
+        [Key]
         public int OrderHeaderId { get; set; }
         public string ApplicationUserId { get; set; }
-        [ForeignKey(nameof(OrderHeaderId))]
+        [ForeignKey("ApplicationUserId")]
         [ValidateNever]
         public ApplicationUser ApplicationUser { get; set; }
 
