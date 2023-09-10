@@ -10,11 +10,11 @@ namespace ADAM.DataAccess.Repository.IRepository
     public interface IRepository<T> where T : class
     {
         //Let T - Category
-        IEnumerable<T> GetAll(string? includeProperties = null);
+        IEnumerable<T> GetAll(Expression<Func<T, bool>>? filter = null, string? includeProperties = null);
 
         // Category? selectedCategory2 = _context.Categories.FirstOrDefault(u => u.CategoryId == id);
         //    T      GetDetails         filter expression( function (T, bool)) 
-        T GetDetails(Expression<Func<T, bool>> filter, string? includeProperties = null, bool tracked = false);
+        T GetDetails(Expression<Func<T, bool>>? filter = null, string? includeProperties = null, bool tracked = false);
 
         void Add(T entity);
 

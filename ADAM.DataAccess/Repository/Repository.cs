@@ -33,7 +33,7 @@ namespace ADAM.DataAccess.Repository
         }
 
         //Category, CoverType etc in comma separated values
-        public T GetDetails(Expression<Func<T, bool>> filter, string? includeProperties = null, bool tracked = false)
+        public T GetDetails(Expression<Func<T, bool>>? filter=null, string? includeProperties = null, bool tracked = false)
         {
             IQueryable<T> query;
             if (tracked) //of tracked==true
@@ -44,7 +44,11 @@ namespace ADAM.DataAccess.Repository
             {
                 query = dbSet.AsNoTracking();   //as not tracking -- to avoid unintentional data change and save
             }
-            query = query.Where(filter);   //apply filter
+            if(filter != null)
+            {
+                query = query.Where(filter);   //apply filter
+            }
+            
             if (!string.IsNullOrEmpty(includeProperties))
             {
                 foreach (var includeProperty in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
@@ -61,10 +65,15 @@ namespace ADAM.DataAccess.Repository
         }
 
         //Category, CoverType etc in comma separated values
-        public IEnumerable<T> GetAll(string? includeProperties = null)
+        public IEnumerable<T> GetAll(Expression<Func<T, bool>>? filter=null, string? includeProperties = null)
         //public IEnumerable<T> GetAll()
         {
             IQueryable<T> query = dbSet;
+            if(filter != null)
+            {
+                query = query.Where(filter);
+            }
+            
             if (!string.IsNullOrEmpty(includeProperties))
             {
                 foreach (var includeProperty in includeProperties.Split(new char[] { ','}, StringSplitOptions.RemoveEmptyEntries)) 
