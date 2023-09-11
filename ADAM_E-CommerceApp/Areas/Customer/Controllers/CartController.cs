@@ -4,6 +4,7 @@ using ADAM.Models.ViewModels;
 using ADAM.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Stripe.Checkout;
 using System.Security.Claims;
 
 namespace ADAM_E_CommerceApp.Areas.Customer.Controllers
@@ -78,17 +79,27 @@ namespace ADAM_E_CommerceApp.Areas.Customer.Controllers
             cartVM.OrderHeader.OrderDate = DateTime.Now;
             cartVM.OrderHeader.ApplicationUserId = userId;
 
-            cartVM.OrderHeader.ApplicationUser = _unitOfWork.applicationUserRepository.GetDetails(u => u.Id == userId);
+            //cartVM.OrderHeader.ApplicationUser = _unitOfWork.applicationUserRepository.GetDetails(u => u.Id == userId);
 
-            /* we will get this from hidden input
+			/* What I did in above line of code is when we were creating the post action method I populated application user. Now typically 
+			what happens is when you are populating a record here and you are telling entity framework code that, hey,
+            I want to add the order header, it will also add all the corresponding navigation properties. It will think
+            that okay you are trying to create a new entity. If you do not want that then you should never populate a 
+            navigation property when you are trying to insert a record in Entity Framework Core, always remember that.
+            So work around to this particular issue is we can have a new application user, call that application user,
+            and then right here we will access that application user also in this if condition. So that is one thing that 
+            you should always remember when you see that Entity Framework Core is trying to add a navigation property,
+            most likely the navigation property is populated. alternative do following*/
+
+            ApplicationUser applicationUser = _unitOfWork.applicationUserRepository.GetDetails(u => u.Id == userId);
+            			
 			foreach (var cart in cartVM.ShoppingCartList)
 			{
 				cart.Price = GetPriceBasedOnQuantity(cart);
 				cartVM.OrderHeader.OrderTotal += cart.Price * cart.Count;
-			}
-            */
+			}           
 
-            if (cartVM.OrderHeader.ApplicationUser.CompanyId.GetValueOrDefault() == 0){
+			if (applicationUser.CompanyId.GetValueOrDefault() == 0){
                 //it is a regular customer
                 cartVM.OrderHeader.PaymentStatus = StaticDetails.PaymentStatusPending;
                 cartVM.OrderHeader.OrderStatus = StaticDetails.StatusPending;
@@ -112,13 +123,68 @@ namespace ADAM_E_CommerceApp.Areas.Customer.Controllers
                 _unitOfWork.orderDetailRepository.Add(detail);
                 _unitOfWork.Save();
             }
-			if (cartVM.OrderHeader.ApplicationUser.CompanyId.GetValueOrDefault() == 0)
+			if (applicationUser.CompanyId.GetValueOrDefault() == 0)
 			{
-				//it is a regular customer account and we need to capture payment
-                //stripe logic
+                //it is a regular customer account and we need to capture payment //stripe logic here
+                var domain = "https://localhost:7196/";
+                var options = new SessionCreateOptions
+                {
+                    SuccessUrl = domain + $"customer/cart/OrderConfirmation?id={cartVM.OrderHeader.OrderHeaderId}",
+                    CancelUrl = domain + "customer/cart/index",
+                    //LineItems basically have all the product details
+					LineItems = new List<SessionLineItemOptions>(),  
+					Mode = "payment",
+				};
+
+                foreach(var item in cartVM.ShoppingCartList){
+                    var sessionLineItem = new SessionLineItemOptions
+                    {
+                        PriceData = new SessionLineItemPriceDataOptions
+                        {
+                            UnitAmount = (long)(item.Price * 100), //$20.50 => 2050
+                            Currency = "usd",
+                            ProductData = new SessionLineItemPriceDataProductDataOptions
+                            {
+                                Name = item.Product.Title
+                            }
+                        },
+                        Quantity = item.Count
+                    };
+                    options.LineItems.Add(sessionLineItem);
+                }
+                //creating new session service
+				var service = new SessionService();
+				Session session = service.Create(options);
+                _unitOfWork.orderHeaderRepository.UpdateStripePaymentID(cartVM.OrderHeader.OrderHeaderId, session.Id, session.PaymentIntentId); //till here, since payment is not started, paymentIntendId=null
+                _unitOfWork.Save();
+                //The url to proceed payment is in session
+                Response.Headers.Add("Location", session.Url);
+                return new StatusCodeResult(303); //stripe payment page
+
 			} //else go to order confirmation
-			return View(cartVM);
+            int orderId = cartVM.OrderHeader.OrderHeaderId;
+			return View(nameof(OrderConfirmation),orderId);
 		}
+
+        public IActionResult OrderConfirmation(int id)
+            
+        {
+            OrderHeader orderHeader = _unitOfWork.orderHeaderRepository.GetDetails(u => u.OrderHeaderId == id, includeProperties: "ApplicationUser");
+            if(orderHeader.PaymentStatus != StaticDetails.PaymentStatusDelayedPayment){
+                var service = new SessionService();
+                Session session = service.Get(orderHeader.SessionId);
+                if(session.PaymentStatus.ToLower() == "paid"){
+                    _unitOfWork.orderHeaderRepository.UpdateStripePaymentID(cartVM.OrderHeader.OrderHeaderId, session.Id, session.PaymentIntentId);
+                    _unitOfWork.orderHeaderRepository.UpdateStatus(id, StaticDetails.StatusApproved, StaticDetails.PaymentStatusApproved);
+                    _unitOfWork.Save();
+                }
+            }
+            List<ShoppingCart> shoppingCarts = _unitOfWork.shoppingCartRepository
+                .GetAll(u => u.ApplicationUserId == orderHeader.ApplicationUserId).ToList();
+            _unitOfWork.shoppingCartRepository.RemoveRange(shoppingCarts);
+            _unitOfWork.Save();
+			return View(id);
+        }
 
 		public IActionResult Plus(int cartId)
         {

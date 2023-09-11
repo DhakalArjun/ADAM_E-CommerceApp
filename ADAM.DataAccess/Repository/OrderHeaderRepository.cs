@@ -23,5 +23,30 @@ namespace ADAM.DataAccess.Repository
         {
             _context.OrderHeaders.Update(obj);
         }
-    }
+
+		public void UpdateStatus(int orderId, string orderStatus, string? paymentStatus = null)
+		{
+			var orderFromDb = _context.OrderHeaders.FirstOrDefault(u => u.OrderHeaderId == orderId);
+            if(orderFromDb != null){
+                orderFromDb.OrderStatus = orderStatus;
+                if (!string.IsNullOrEmpty(paymentStatus))
+                {
+                    orderFromDb.PaymentStatus = paymentStatus;
+                }
+            }
+		}
+
+		public void UpdateStripePaymentID(int orderId, string sessionId, string paymentIntentId)
+		{
+			var orderFromDb = _context.OrderHeaders.FirstOrDefault(u => u.OrderHeaderId == orderId);
+			if (orderFromDb !=null && !string.IsNullOrEmpty(sessionId))
+			{
+                orderFromDb.SessionId = sessionId;
+			}
+			if (orderFromDb != null && !string.IsNullOrEmpty(paymentIntentId))
+			{
+				orderFromDb.PaymentIntentId = paymentIntentId;
+			}
+		}
+	}
 }
