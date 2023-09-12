@@ -46,6 +46,7 @@ namespace ADAM.DataAccess.Repository
 			if (orderFromDb != null && !string.IsNullOrEmpty(paymentIntentId))
 			{
 				orderFromDb.PaymentIntentId = paymentIntentId;
+                orderFromDb.PaymentDate = DateTime.Now;
 			}
 		}
 	}

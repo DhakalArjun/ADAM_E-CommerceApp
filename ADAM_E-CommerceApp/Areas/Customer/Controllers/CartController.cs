@@ -174,7 +174,7 @@ namespace ADAM_E_CommerceApp.Areas.Customer.Controllers
                 var service = new SessionService();
                 Session session = service.Get(orderHeader.SessionId);
                 if(session.PaymentStatus.ToLower() == "paid"){
-                    _unitOfWork.orderHeaderRepository.UpdateStripePaymentID(cartVM.OrderHeader.OrderHeaderId, session.Id, session.PaymentIntentId);
+                    _unitOfWork.orderHeaderRepository.UpdateStripePaymentID(id, session.Id, session.PaymentIntentId);
                     _unitOfWork.orderHeaderRepository.UpdateStatus(id, StaticDetails.StatusApproved, StaticDetails.PaymentStatusApproved);
                     _unitOfWork.Save();
                 }
